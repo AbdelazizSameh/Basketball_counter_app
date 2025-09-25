@@ -1,8 +1,10 @@
+import 'package:basketball_app/cubit/counter_cubit.dart';
+import 'package:basketball_app/cubit/counter_state.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'custom_divider.dart';
 import 'custom_elevated_button.dart';
-import 'custom_team_configuration.dart';
+import 'custom_text.dart';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({
@@ -11,6 +13,9 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final counterCubit = BlocProvider.of<CounterCubit>(context);
+    var teamAcounter = counterCubit.teamAcounter;
+    var teamBcounter = counterCubit.teamBcounter;
     return Column(
       children: [
         SizedBox(
@@ -21,29 +26,84 @@ class HomeViewBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             spacing: 10,
             children: [
-              CustomTeamConfiguration(
-                text: "Team A",
-                onOnePointTap: () {},
-                onTwoPointsTap: () {},
-                onThreePointsTap: () {},
+              Column(
+                spacing: 20,
+                children: [
+                  CustomText(
+                    text: "Team A",
+                    fontSize: 35,
+                  ),
+                  SizedBox(
+                    width: 120,
+                    height: 180,
+                    child: FittedBox(
+                        child: BlocConsumer<CounterCubit, CounterState>(
+                      listener: (context, state) {
+                        teamAcounter = counterCubit.teamAcounter;
+                      },
+                      builder: (context, state) {
+                        return CustomText(text: "$teamAcounter", fontSize: 90);
+                      },
+                    )),
+                  ),
+                  CustomElevatedButton(
+                    text: "Add 1 point",
+                    onTap: () => counterCubit.increaseTeamA(1),
+                  ),
+                  CustomElevatedButton(
+                    text: "Add 2 point",
+                    onTap: () => counterCubit.increaseTeamA(2),
+                  ),
+                  CustomElevatedButton(
+                    text: "Add 3 point",
+                    onTap: () => counterCubit.increaseTeamA(3),
+                  ),
+                ],
               ),
               const CustomDivider(),
-              CustomTeamConfiguration(
-                text: "Team B",
-                onOnePointTap: () {},
-                onTwoPointsTap: () {},
-                onThreePointsTap: () {},
-              )
+              Column(
+                spacing: 20,
+                children: [
+                  CustomText(
+                    text: "Team B",
+                    fontSize: 35,
+                  ),
+                  SizedBox(
+                      width: 120,
+                      height: 180,
+                      child: FittedBox(
+                        child: BlocConsumer<CounterCubit, CounterState>(
+                          listener: (context, state) {
+                            teamBcounter = counterCubit.teamBcounter;
+                          },
+                          builder: (context, state) {
+                            return CustomText(
+                                text: "$teamBcounter", fontSize: 90);
+                          },
+                        ),
+                      )),
+                  CustomElevatedButton(
+                    text: "Add 1 point",
+                    onTap: () => counterCubit.increaseTeamB(1),
+                  ),
+                  CustomElevatedButton(
+                    text: "Add 2 point",
+                    onTap: () => counterCubit.increaseTeamB(2),
+                  ),
+                  CustomElevatedButton(
+                    text: "Add 3 point",
+                    onTap: () => counterCubit.increaseTeamB(3),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
         SizedBox(
-          height: 90,
+          height: 130,
         ),
         CustomElevatedButton(
-          text: 'Reset',
-          onTap: () {},
-        )
+            text: 'Reset', onTap: () => counterCubit.resetCounter())
       ],
     );
   }

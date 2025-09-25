@@ -17,7 +17,7 @@ class CounterCubit extends Cubit<CounterState> {
     emit(CounterBIncreamentState());
   }
 
-  void resetCounter(int counter) {
+  void resetCounter() {
     teamAcounter = 0;
     teamBcounter = 0;
     emit(CounterResetState());
