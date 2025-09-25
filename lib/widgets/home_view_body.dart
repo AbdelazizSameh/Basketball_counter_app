@@ -14,8 +14,6 @@ class HomeViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final counterCubit = BlocProvider.of<CounterCubit>(context);
-    var teamAcounter = counterCubit.teamAcounter;
-    var teamBcounter = counterCubit.teamBcounter;
     return Column(
       children: [
         SizedBox(
@@ -37,12 +35,10 @@ class HomeViewBody extends StatelessWidget {
                     width: 120,
                     height: 180,
                     child: FittedBox(
-                        child: BlocConsumer<CounterCubit, CounterState>(
-                      listener: (context, state) {
-                        teamAcounter = counterCubit.teamAcounter;
-                      },
+                        child: BlocBuilder<CounterCubit, CounterState>(
                       builder: (context, state) {
-                        return CustomText(text: "$teamAcounter", fontSize: 90);
+                        return CustomText(
+                            text: "${counterCubit.teamAcounter}", fontSize: 90);
                       },
                     )),
                   ),
@@ -72,13 +68,11 @@ class HomeViewBody extends StatelessWidget {
                       width: 120,
                       height: 180,
                       child: FittedBox(
-                        child: BlocConsumer<CounterCubit, CounterState>(
-                          listener: (context, state) {
-                            teamBcounter = counterCubit.teamBcounter;
-                          },
+                        child: BlocBuilder<CounterCubit, CounterState>(
                           builder: (context, state) {
                             return CustomText(
-                                text: "$teamBcounter", fontSize: 90);
+                                text: "${counterCubit.teamBcounter}",
+                                fontSize: 90);
                           },
                         ),
                       )),
